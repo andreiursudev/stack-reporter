@@ -49,13 +49,13 @@ This helped minimize the amount of data needed to be written to the log file and
 
     You can look at [To-Do-App](https://github.com/andreiursudev/to-do-app) for an example on how to configure Stack-Reporter for your project.
 4. After this changes build the jar for your project.
-5. Download the aspectjweaver.jar from  https://repo1.maven.org/maven2/org/aspectj/aspectjweaver/1.9.19/aspectjweaver-1.9.19.jar
-6. Run the resulting jar together with the aspectjweaver Java agent using the following command line:
+5. Download the [aspectjweaver.jar](https://repo1.maven.org/maven2/org/aspectj/aspectjweaver/1.9.19/aspectjweaver-1.9.19.jar)
+6. Run your project jar together with the aspectjweaver Java agent using the following command line:
     ```shell
     java -javaagent:"d:/aspectjweaver-1.9.19.jar" --add-opens java.base/java.lang=ALL-UNNAMED -jar your-jar-name.jar
     ```
     Specify the path to your `aspectjweaver-1.9.19.jar` file location.
-    `--add-opens java.base/java.lang=ALL-UNNAMED` configuration is needed for Java 16+ projects because of the [weaving agent collision with JEP 396](https://github.com/eclipse/org.aspectj/blob/d17189c430a7ffd1ec966759a93b3ed348766650/docs/dist/doc/README-197.html#L71-L79)`
+    `--add-opens java.base/java.lang=ALL-UNNAMED` configuration is needed for Java 16+ projects because of the [weaving agent collision with JEP 396](https://github.com/eclipse/org.aspectj/blob/d17189c430a7ffd1ec966759a93b3ed348766650/docs/dist/doc/README-197.html#L71-L79)
 7. Start using your application as you normally do. You should see a `stack-report.js` file created next to your .jar file containing the logs of the methods that were executed at runtime.
 8. To visualise `stack-report.js` file in a webpage, clone the [Stack-Viewer](https://github.com/andreiursudev/stack-viewer) repo on your local machine and copy the `stack-report.js` file next to the `index.html`. Open whe `index.html` in your web-browser to see the result.
 9. If you configure the `maven-surefire-plugin` like this:
@@ -73,3 +73,8 @@ This helped minimize the amount of data needed to be written to the log file and
     </plugin>
     ```
     when running the unit test the method call stack will be logged in the `stack-report.js` file.
+
+# Side effects
+If you are using Spring Boot for you application its possible that aspectjweaver library to log some exceptions stack trace in your application log. Also this logs will be duped in `ajcore.*.txt` files.
+[This problem](https://github.com/spring-projects/spring-framework/issues/27650) is specific to Spring Boot.
+Please ignore the loged stack traces and feel free to remove the `ajcore.*.txt` files.
