@@ -6,7 +6,7 @@ Using Stack-Reporter can give you new insights over your application business lo
 # Description
 
 Stack-Reporter is a Java library that uses AspectJ in order to log all the methods executions, with their input parameters values and their return values, within a Java program at runtime.
-The result log file can then be rendered as a diagram using the Stack-Viewer.
+The result log file can then be rendered as a diagram using the [Stack-Viewer](https://github.com/andreiursudev/stack-viewer).
 
 Using Aspect-oriented programming(AOP) concepts and the AspectJ implementation of them, made Stack-Reporter behave as a plugin that can be applied, with minimal effort, to any Java project without requiring modification to the existing code.
 
