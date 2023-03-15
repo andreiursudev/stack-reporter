@@ -47,7 +47,7 @@ Replace
 your.package.name
 ```
 with the package that contains the methods that you want to be logged by Stack-Reporter.
-You can look at [To-Do-App](https://github.com/andreiursudev/to-do-app) for an example on how to configure Stack-Reporter for your project
+You can look at [To-Do-App](https://github.com/andreiursudev/to-do-app) for an example on how to configure Stack-Reporter for your project.
 4. After this changes build the jar for your project.
 5. Download the aspectjweaver.jar from  https://repo1.maven.org/maven2/org/aspectj/aspectjweaver/1.9.19/aspectjweaver-1.9.19.jar
 6. Run the resulting jar together with the aspectjweaver Java agent using the following command line:
