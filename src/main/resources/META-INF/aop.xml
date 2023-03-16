@@ -1,11 +1,9 @@
 <aspectj>
     <aspects>
-        <concrete-aspect name="org.stackreporter.aspect.MyLogMethodExecution" extends="org.stackreporter.aspect.MethodExecutionAspect">
+        <concrete-aspect name="org.stackreporter.aspect.MyMethodExecutionAspect" extends="org.stackreporter.aspect.MethodExecutionAspect">
             <pointcut name="methodExecution" expression="execution(* org.stackreporter.logic..*(..))"/>
         </concrete-aspect>
-        <concrete-aspect name="org.stackreporter.aspect.MyMethodExecutionBuilder" extends="org.stackreporter.aspect.MethodCallAspect">
-            <pointcut name="methodCall" expression="call(* org.stackreporter.logic..*(..))"/>
-        </concrete-aspect>
+
     </aspects>
     <!--<weaver options="-showWeaveInfo -Xlint:ignore">
     </weaver>-->

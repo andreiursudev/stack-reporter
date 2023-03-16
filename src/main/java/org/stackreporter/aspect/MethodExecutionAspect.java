@@ -4,11 +4,10 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
-import org.stackreporter.adapter.methodexecutiontofile.MethodExecutionPrinter;
-import org.stackreporter.methodexecution.MethodExecutionBuilder;
-import org.stackreporter.methodexecution.RootIdToMethodExecution;
-import org.stackreporter.methodexecution.MethodExecution;
 import org.stackreporter.adapter.aspectjtomethodexecution.MethodExecutionFactory;
+import org.stackreporter.adapter.methodexecutiontofile.MethodExecutionPrinter;
+import org.stackreporter.methodexecution.MethodExecution;
+import org.stackreporter.methodexecution.MethodExecutionBuilder;
 
 @Aspect
 public abstract class MethodExecutionAspect {
@@ -19,21 +18,30 @@ public abstract class MethodExecutionAspect {
     abstract void methodExecution();
 
     @Around("methodExecution()")
-    public Object closeBuildingMethodExecution(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
-        MethodExecution currentMethodExecution = methodExecutionFactory.getMethodExecution(proceedingJoinPoint);
+    public Object around(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
+        if (isNotToStringMethod(proceedingJoinPoint)) {
+            MethodExecution currentMethodExecution = methodExecutionFactory.getMethodExecution(proceedingJoinPoint);
+            MethodExecution currentMethodExecutionTree = MethodExecutionBuilder.INSTANCE.addMethodExecution(currentMethodExecution);
 
-        Object output = proceedingJoinPoint.proceed();
+            MethodExecutionBuilder.INSTANCE.increaseTreeDepth();
 
-        MethodExecution rootMethodExecution = RootIdToMethodExecution.getMethodExecutionByRootId(currentMethodExecution.id());
-        if (rootMethodExecution != null) {
-            rootMethodExecution.setInput(currentMethodExecution.getInput());
-            rootMethodExecution.setOutput(output);
-            MethodExecutionPrinter.print(rootMethodExecution);
-            RootIdToMethodExecution.clear();
-            MethodExecutionBuilder.INSTANCE.clear();
+            Object output = proceedingJoinPoint.proceed();
+            currentMethodExecution.setOutput(methodExecutionFactory.getOutputAsString(output));
+
+            MethodExecutionBuilder.INSTANCE.decreaseTreeDepth();
+
+            if (MethodExecutionBuilder.INSTANCE.isRootDepth()) {
+                MethodExecutionPrinter.print(currentMethodExecutionTree);
+                MethodExecutionBuilder.INSTANCE.clear();
+            }
+
+            return output;
+        } else {
+            return proceedingJoinPoint.proceed();
         }
-
-        return output;
     }
 
+    private static boolean isNotToStringMethod(ProceedingJoinPoint proceedingJoinPoint) {
+        return !proceedingJoinPoint.getSignature().getName().equals("toString");
+    }
 }

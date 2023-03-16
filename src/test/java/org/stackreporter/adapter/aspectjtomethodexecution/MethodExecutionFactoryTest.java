@@ -3,6 +3,7 @@ package org.stackreporter.adapter.aspectjtomethodexecution;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.reflect.CodeSignature;
 import org.junit.jupiter.api.Test;
+import org.stackreporter.logic.Person;
 import org.stackreporter.logic.logic1.Object1;
 import org.stackreporter.methodexecution.MethodExecution;
 
@@ -30,7 +31,8 @@ class MethodExecutionFactoryTest {
 
     @Test
     void variousInputParameters() {
-        String input = MethodExecutionFactory.getInput(new String[]{"parameter1", "parameter2", "parameter3"}, new Object[]{null, "someString", new Person("Andrei", "Ursu")});
+        MethodExecutionFactory methodExecutionFactory = new MethodExecutionFactory();
+        String input = methodExecutionFactory.getInput(new String[]{"parameter1", "parameter2", "parameter3"}, new Object[]{null, "someString", new Person("Andrei", "Ursu")});
 
         assertEquals("""
                 parameter1 = null
@@ -42,20 +44,3 @@ class MethodExecutionFactoryTest {
 
 }
 
-class Person {
-    private String firstName;
-    private String lastName;
-
-    public Person(String firstName, String lastName) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-    }
-
-    @Override
-    public String toString() {
-        return "Person{" +
-                "firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                '}';
-    }
-}

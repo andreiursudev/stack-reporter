@@ -10,9 +10,6 @@ The result log file can then be rendered as a diagram using the [Stack-Viewer](h
 
 Using Aspect-oriented programming(AOP) concepts and the AspectJ implementation of them, made Stack-Reporter behave as a plugin that can be applied, with minimal effort, to any Java project without requiring modification to the existing code.
 
-One of the biggest challenges when implementing the Stack-Reporter was to combine the call and execute pointcuts and their advices in order to model the method call stack in recursive way.
-This helped minimize the amount of data needed to be written to the log file and also the number of times the log file needed to be touched.
-
 # How to use
 1. Clone this GitHub repo and install the stack-reporter artefact into your local maven repository using the command:
     ```
@@ -32,9 +29,6 @@ This helped minimize the amount of data needed to be written to the log file and
         <aspects>
             <concrete-aspect name="your.package.name.MyMethodExecutionAspect" extends="org.stackreporter.aspect.MethodExecutionAspect">
                 <pointcut name="methodExecution" expression="execution(* your.package.name..*(..))"/>
-            </concrete-aspect>
-            <concrete-aspect name="your.package.name.MyMethodCallAspect" extends="org.stackreporter.aspect.MethodCallAspect">
-                <pointcut name="methodCall" expression="call(* your.package.name..*(..))"/>
             </concrete-aspect>
         </aspects>
         <weaver options="-Xlint:ignore">
@@ -75,6 +69,7 @@ This helped minimize the amount of data needed to be written to the log file and
     when running the unit test the method call stack will be logged in the `stack-report.js` file.
 
 # Side effects
-If you are using Spring Boot for you application its possible that aspectjweaver library to log some exceptions stack trace in your application log. Also this logs will be duped in `ajcore.*.txt` files.
-[This problem](https://github.com/spring-projects/spring-framework/issues/27650) is specific to Spring Boot.
-Please ignore the loged stack traces and feel free to remove the `ajcore.*.txt` files.
+1. If you are using Spring Boot for you application its possible that aspectjweaver library to log some exceptions stack trace in your application log. Also this logs will be duped in `ajcore.*.txt` files.
+   [This problem](https://github.com/spring-projects/spring-framework/issues/27650) is specific to Spring Boot.
+   Please ignore the loged stack traces and feel free to remove the `ajcore.*.txt` files.
+2. #toString methods are not logged in the `stack-report.js` because #toString methods are also called inside Stack-Reporter. To be fixed later.

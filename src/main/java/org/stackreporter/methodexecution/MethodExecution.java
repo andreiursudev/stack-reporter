@@ -33,8 +33,8 @@ public class MethodExecution {
         return output;
     }
 
-    public void setOutput(Object output) {
-        this.output = output == null ? null : output.toString();
+    public void setOutput(String output) {
+        this.output = output;
     }
 
     public void setInput(String input) {

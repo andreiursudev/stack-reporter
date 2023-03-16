@@ -46,10 +46,6 @@ public enum MethodExecutionBuilder {
         return stackDepth;
     }
 
-    public List<MethodExecution> getMethodExecutions() {
-        return methodExecutions;
-    }
-
     public void clear() {
         this.methodExecutions.clear();
     }
