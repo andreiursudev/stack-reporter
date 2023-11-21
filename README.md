@@ -1,7 +1,7 @@
 # Stack-Reporter
 
 The Stack-Reporter was created to help you more easily discover and understand what happens within your software product at runtime.
-Using Stack-Reporter can give you new insights into your application business logic and test cases or serve as a documentation generator.
+Stack-Reporter can give you new insights into your application business logic and test cases or serve as a documentation generator.
 
 # Description
 
